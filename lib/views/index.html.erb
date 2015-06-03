@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebreaker</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="left-side">
+        <h1>Codebreacker logic game</h1>
+        <h3>Computer have generated secret code with 4 numbers fom 1 to 6. Try to guess it!</h3>
+        <p>You have <%= game.number_of_turns %> attampts and <%= game.hints_avaliable %> hint.</p>
+        <table>
+          <% game.user_guesses_and_answers.each do |i| %>
+            <tr>
+              <td><%= i.keys.join %></td>
+              <td><%= i.values.join %></td>
+            </tr>
+          <% end %>
+        </table>
+        <br>
+        
+        <!--WON GAME notification-->
+        <% if game.game_status == "win" %>
+          <p>Congrats! You won the game. Your score: <%= game.score%></p>
+          <!--SAVE RESULT FORM-->
+          <% if game.result_saved %>
+            <p>Your result saved.</p>
+          <% else %>
+            <p>Save result if you want:</p>
+            <form method="post" action="/save_result">
+              <input name="name" type="text" placeholder="enter your name" autofocus>
+              <input type="submit" value="Save">
+            </form>
+          <% end %>
+        
+        <!--LOST GAME notification-->
+        <% elsif game.game_status == "lose" %>
+          <p>You lost. Good lack next time )</p>       
+        
+        <!--GUESS FORM (for not completed game)-->
+        <% else %>
+          <form method="post" action="/submit_guess">
+            <input name="guess" type="text" placeholder="enter your guess" autofocus>
+            <input type="submit" value="Submit">
+          </form>
+        <% end %>
+        <br>
+
+        <!--HINT lnk-->
+        <% if game.game_status == "not_completed" && game.hints_avaliable > 0 %>
+          <div class="hint">
+            <a href="/hint">Use hint</a><em> (will decrease your score by 30 points)</em>
+          </div>
+        <% end %>
+        <br>
+        
+        <!--RESTART GAME btn-->
+        <form method="post" action="/new_game">
+          <input type="submit" value="Start new game">
+        </form>
+        
+        
+        <br><br>
+      </div>
+      <div class="right-side">
+        
+        <div class="results">
+          <h3>Best results:</h3>
+          <!--RESULTS table-->
+          <% if saved_results.results.size > 0 %>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Player</th>
+                  <th>Score</th>
+                  <th>Date and time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% saved_results.results.first(10).each_with_index do |result, i| %>
+                  <tr>
+                    <td><%= i + 1%></td>
+                    <td><%= result[:name] %></td>
+                    <td><%= result[:score] %></td>
+                    <td><%= result[:date].strftime("%d.%m.%Y %H:%M:%S") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %> 
+            <em>There is no results saved. You can be first! <br>Just win the game, enter your name and hit "save" button :)</em>
+          <% end %>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </body>
+</html>

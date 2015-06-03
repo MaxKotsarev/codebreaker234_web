@@ -1,0 +1,2 @@
+--- !ruby/object:Codebreaker234::ResultsCollection
+results: []
