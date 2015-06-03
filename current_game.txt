@@ -1,8 +1,16 @@
 --- !ruby/object:Codebreaker234::Game
-secret_code: '6325'
-number_of_turns: 10
-hint_position: 3
+secret_code: '3133'
+number_of_turns: 2
+hint_position: 1
 hints_avaliable: 1
-user_guesses_and_answers: []
-game_status: not_completed
-result_saved: false
+user_guesses_and_answers:
+- '1234': "+-"
+- '1256': "-"
+- '2132': "++"
+- '2233': "++"
+- '2435': "+"
+- '3132': "+++"
+- '3131': "+++"
+- '3133': "++++"
+game_status: win
+result_saved: true

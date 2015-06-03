@@ -25,22 +25,7 @@ class WebUiController
     when "/" then Rack::Response.new(render("index.html.erb"))
     when "/submit_guess"
       Rack::Response.new do |response|
-        user_input = @request.params["guess"]
-        
-        if user_input.match(/^[1-6]{4}$/)
-          game.user_guesses_and_answers << {user_input => game.mark_user_guess(user_input)}
-          game.decrease_avaliable_turns
-        else 
-          game.user_guesses_and_answers << {user_input => "Wrong guess. Pls enter exectly 4 numbers. Each from 1 to 6."}
-        end
-
-        if game.mark_user_guess(user_input) == "++++"
-          game.game_status = "win"
-          
-        elsif game.number_of_turns <= 0
-          game.game_status = "lose"
-        end
-
+        game.analize(@request.params["guess"])
         game.save_to(@current_game_file) 
         response.redirect("/")
       end

@@ -1,2 +1,5 @@
 --- !ruby/object:Codebreaker234::ResultsCollection
-results: []
+results:
+- :name: max
+  :score: 50
+  :date: 2015-06-03 20:21:39.274356000 +03:00
